@@ -25,7 +25,7 @@ class FoodsController {
       createdFoodLastID
     );
 
-    return res.status(201).json();
+    return res.status(201).json(createdFoodLastID);
   }
 
   async update(req, res) {

@@ -53,7 +53,8 @@ class FoodsRepository {
     const database = await sqliteConnection();
 
     const foods = await database.all(
-      `SELECT foods.id,
+      `SELECT foods.image,
+        foods.id,
         food_categories.name AS category_name,
         foods.name,
         foods.description,

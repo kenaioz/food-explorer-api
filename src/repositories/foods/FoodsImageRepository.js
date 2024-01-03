@@ -1,7 +1,7 @@
 const sqliteConnection = require("../../database/sqlite");
 
 class FoodsImageRepository {
-  async selectIndex(food_id, imageFilename) {
+  async selectIndex(food_id) {
     const database = await sqliteConnection();
 
     const food = await database.get(
