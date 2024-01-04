@@ -69,7 +69,8 @@ class FoodsRepository {
   async selectById(id) {
     const database = await sqliteConnection();
     const food = await database.get(
-      `SELECT foods.id,
+      `SELECT foods.image,
+        foods.id,
         foods.name,
         foods.description,
         JSON_GROUP_ARRAY(food_ingredients.name) AS ingredients_names,
