@@ -32,7 +32,8 @@ class FoodsServices {
   async listIndex(foodID) {
     const food = await this.foodsRepository.selectById(foodID);
 
-    food.ingredients_names = JSON.parse(food.ingredients_names);
+    food.ingredients = JSON.parse(food.ingredients);
+    food.category = JSON.parse(food.category);
 
     return food;
   }

@@ -21,7 +21,7 @@ class FoodsRepository {
   async updateData(foodJSON, user_id) {
     const database = await sqliteConnection();
 
-    const { lastID } = await database.run(
+    await database.run(
       `UPDATE foods
         SET name = (?),
         description = (?),
@@ -73,8 +73,8 @@ class FoodsRepository {
         foods.id,
         foods.name,
         foods.description,
-        JSON_GROUP_ARRAY(food_ingredients.name) AS ingredients_names,
-        food_categories.name AS category_name,
+        JSON_GROUP_ARRAY(JSON_OBJECT('id', food_ingredients.id, 'name', food_ingredients.name)) AS ingredients,
+        JSON_OBJECT('id', food_categories.id, 'name', food_categories.name) AS category,
         foods.price
       FROM foods
       JOIN food_ingredients_pivot ON foods.id = food_ingredients_pivot.food_id
