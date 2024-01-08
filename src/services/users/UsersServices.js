@@ -7,7 +7,10 @@ class UsersServices {
   }
 
   async create({ name, email, password }) {
-    const checkUserExists = await this.usersRepository.findByEmail(email);
+    const checkUserExists = await this.usersRepository.findByEmailOrId(
+      email,
+      true
+    );
 
     if (checkUserExists) {
       throw new AppError("Este e-mail já está em uso.");
@@ -25,13 +28,16 @@ class UsersServices {
   }
 
   async update({ id, name, email, new_password, old_password, role }) {
-    const user = await this.usersRepository.selectIndex(id);
+    const user = await this.usersRepository.findByEmailOrId(id);
 
     if (!user) {
       throw new AppError("Usuário não encontrado");
     }
 
-    const userWithUpdatedEmail = await this.usersRepository.findByEmail(email);
+    const userWithUpdatedEmail = await this.usersRepository.findByEmailOrId(
+      email,
+      true
+    );
 
     if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user.id) {
       throw new AppError("Este e-mail já está em uso");
@@ -75,7 +81,7 @@ class UsersServices {
   }
 
   async delete(id) {
-    const user = await this.usersRepository.selectIndex(id);
+    const user = await this.usersRepository.findByEmailOrId(id);
 
     if (user.role == "admin") {
       throw new AppError("Não é possível excluir um usuário admin");

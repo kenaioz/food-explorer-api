@@ -2,15 +2,34 @@ const sqliteConnection = require("../../database/sqlite");
 const AppError = require("../../utils/AppError");
 
 class UsersRepository {
-  async findByEmail(email) {
+  async findByEmailOrId(identifier, byEmail = false) {
     const database = await sqliteConnection();
-    const user = await database.get(
-      "SELECT id, name, email, role FROM users WHERE email = (?)",
-      [email]
-    );
+    let user;
+
+    if (byEmail) {
+      user = await database.get(
+        "SELECT id, name, email, role FROM users WHERE email = (?)",
+        [identifier]
+      );
+    } else {
+      user = await database.get(
+        "SELECT id, name, email, password, role FROM users WHERE id = (?)",
+        [identifier]
+      );
+    }
 
     return user;
   }
+
+  // async findByEmail(email) {
+  //   const database = await sqliteConnection();
+  //   const user = await database.get(
+  //     "SELECT id, name, email, role FROM users WHERE email = (?)",
+  //     [email]
+  //   );
+
+  //   return user;
+  // }
 
   async createUser({ name, email, password }) {
     const database = await sqliteConnection();
@@ -35,15 +54,15 @@ class UsersRepository {
     return;
   }
 
-  async selectIndex(userID) {
-    const database = await sqliteConnection();
-    const user = await database.get(
-      "SELECT id, name, email, password, role FROM users WHERE id = (?)",
-      [userID]
-    );
+  // async selectIndex(userID) {
+  //   const database = await sqliteConnection();
+  //   const user = await database.get(
+  //     "SELECT id, name, email, password, role FROM users WHERE id = (?)",
+  //     [userID]
+  //   );
 
-    return user;
-  }
+  //   return user;
+  // }
 
   async delete(userID) {
     const database = await sqliteConnection();
