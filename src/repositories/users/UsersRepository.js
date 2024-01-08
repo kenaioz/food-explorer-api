@@ -21,15 +21,13 @@ class UsersRepository {
     return user;
   }
 
-  // async findByEmail(email) {
-  //   const database = await sqliteConnection();
-  //   const user = await database.get(
-  //     "SELECT id, name, email, role FROM users WHERE email = (?)",
-  //     [email]
-  //   );
-
-  //   return user;
-  // }
+  async selectAll() {
+    const database = await sqliteConnection();
+    const user = await database.all(
+      `SELECT id, name, email, role, created_at, updated_at FROM users`
+    );
+    return user;
+  }
 
   async createUser({ name, email, password }) {
     const database = await sqliteConnection();
@@ -53,16 +51,6 @@ class UsersRepository {
     );
     return;
   }
-
-  // async selectIndex(userID) {
-  //   const database = await sqliteConnection();
-  //   const user = await database.get(
-  //     "SELECT id, name, email, password, role FROM users WHERE id = (?)",
-  //     [userID]
-  //   );
-
-  //   return user;
-  // }
 
   async delete(userID) {
     const database = await sqliteConnection();
