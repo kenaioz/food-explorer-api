@@ -63,7 +63,7 @@ class UsersServices {
     }
 
     if (role) {
-      if (user.role == "admin") {
+      if (user.role == "admin" && role != "admin") {
         throw new AppError("Não é possível alterar a role de um usuário admin");
       }
       user.role = role;

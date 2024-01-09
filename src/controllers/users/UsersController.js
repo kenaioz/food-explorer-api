@@ -7,7 +7,9 @@ const UsersServices = require("../../services/users/UsersServices");
 
 class UsersController {
   async create(req, res) {
+    console.log(req.body);
     const { name, email, password } = req.body;
+    console.log(name, email, password);
 
     const usersRepository = new UsersRepository();
     const usersService = new UsersServices(usersRepository);
