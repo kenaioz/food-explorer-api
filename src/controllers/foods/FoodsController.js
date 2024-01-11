@@ -20,10 +20,12 @@ class FoodsController {
 
     const createdFoodLastID = await foodsServices.createData(food, user_id);
 
-    await foodsIngredientsPivotServices.updatePivotData(
-      food,
-      createdFoodLastID
-    );
+    if (food.ingredients.length > 0) {
+      await foodsIngredientsPivotServices.updatePivotData(
+        food,
+        createdFoodLastID
+      );
+    }
 
     return res.status(201).json(createdFoodLastID);
   }
@@ -59,7 +61,9 @@ class FoodsController {
     if (!isEqual) {
       await foodsIngredientsPivotServices.deletePivotRelations(food.id);
 
-      await foodsIngredientsPivotServices.updatePivotData(food, food.id);
+      if (newIngredientsArray.length > 0) {
+        await foodsIngredientsPivotServices.updatePivotData(food, food.id);
+      }
     }
 
     return res.status(201).json();
@@ -71,7 +75,15 @@ class FoodsController {
     const foodsRepository = new FoodsRepository();
     const foodsServices = new FoodsServices(foodsRepository);
 
+    const foodsIngredientsPivotRepository =
+      new FoodsIngredientsPivotRepository();
+    const foodsIngredientsPivotServices = new FoodsIngredientsPivotServices(
+      foodsIngredientsPivotRepository
+    );
+
     await foodsServices.deleteIndex(id);
+
+    await foodsIngredientsPivotServices.deletePivotRelations(id);
 
     return res.status(201).json();
   }

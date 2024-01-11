@@ -1,16 +1,16 @@
 const sqliteConnection = require("../../database/sqlite");
 
 class FoodsRepository {
-  async insertData(foodJSON, user_id) {
+  async insertData(foodData, user_id) {
     const database = await sqliteConnection();
 
     const { lastID } = await database.run(
       `INSERT INTO foods(name, description, categories_id, price, user_id) VALUES (?, ?, ?, ?, ?)`,
       [
-        foodJSON.name,
-        foodJSON.description,
-        foodJSON.category,
-        foodJSON.price,
+        foodData.name,
+        foodData.description,
+        foodData.category,
+        foodData.price,
         user_id,
       ]
     );
@@ -18,7 +18,7 @@ class FoodsRepository {
     return lastID;
   }
 
-  async updateData(foodJSON, user_id) {
+  async updateData(foodData, user_id) {
     const database = await sqliteConnection();
 
     await database.run(
@@ -30,12 +30,12 @@ class FoodsRepository {
         user_id = (?)
       WHERE id = (?);`,
       [
-        foodJSON.name,
-        foodJSON.description,
-        foodJSON.category,
-        foodJSON.price,
+        foodData.name,
+        foodData.description,
+        foodData.category,
+        foodData.price,
         user_id,
-        foodJSON.id,
+        foodData.id,
       ]
     );
 
@@ -55,12 +55,12 @@ class FoodsRepository {
     const foods = await database.all(
       `SELECT foods.image,
         foods.id,
-        food_categories.name AS category_name,
+        JSON_OBJECT('id', food_categories.id, 'name', food_categories.name) AS category,
         foods.name,
         foods.description,
         foods.price
       FROM foods
-      JOIN food_categories ON foods.categories_id = food_categories.id`
+      LEFT JOIN food_categories ON foods.categories_id = food_categories.id`
     );
 
     return foods;
@@ -77,9 +77,9 @@ class FoodsRepository {
         JSON_OBJECT('id', food_categories.id, 'name', food_categories.name) AS category,
         foods.price
       FROM foods
-      JOIN food_ingredients_pivot ON foods.id = food_ingredients_pivot.food_id
-      JOIN food_ingredients ON food_ingredients_pivot.ingredient_id = food_ingredients.id
-      JOIN food_categories ON foods.categories_id = food_categories.id
+      LEFT JOIN food_ingredients_pivot ON foods.id = food_ingredients_pivot.food_id
+      LEFT JOIN food_ingredients ON food_ingredients_pivot.ingredient_id = food_ingredients.id
+      LEFT JOIN food_categories ON foods.categories_id = food_categories.id
       WHERE foods.id = (?)`,
       [id]
     );

@@ -33,6 +33,7 @@ class FoodsIngredientsPivotServices {
 
   async deletePivotRelations(foodID) {
     await this.foodsIngredientsPivotRepository.deleteIngredientsPivot(foodID);
+    return;
   }
 
   async arrayIsEqual(newIngredientsArray, oldIngredientsArray) {

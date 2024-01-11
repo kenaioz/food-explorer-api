@@ -5,14 +5,14 @@ class FoodsServices {
     this.foodsRepository = foodsRepository;
   }
 
-  async createData(foodJSON, user_id) {
-    const lastID = await this.foodsRepository.insertData(foodJSON, user_id);
+  async createData(foodData, user_id) {
+    const lastID = await this.foodsRepository.insertData(foodData, user_id);
 
     return lastID;
   }
 
-  async putData(foodJSON, user_id) {
-    await this.foodsRepository.updateData(foodJSON, user_id);
+  async putData(foodData, user_id) {
+    await this.foodsRepository.updateData(foodData, user_id);
 
     return;
   }
@@ -26,7 +26,14 @@ class FoodsServices {
   async listAll() {
     const foods = await this.foodsRepository.selectAll();
 
-    return foods;
+    const updatedFoods = foods.map((food) => {
+      return {
+        ...food,
+        category: JSON.parse(food.category),
+      };
+    });
+
+    return updatedFoods;
   }
 
   async listIndex(foodID) {
@@ -34,6 +41,10 @@ class FoodsServices {
 
     food.ingredients = JSON.parse(food.ingredients);
     food.category = JSON.parse(food.category);
+
+    if (!food.ingredients[0].id) {
+      food.ingredients = [];
+    }
 
     return food;
   }
