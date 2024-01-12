@@ -1,14 +1,18 @@
 const { compare } = require("bcryptjs");
 const { sign } = require("jsonwebtoken");
-const knex = require("../database/knex");
+
 const authConfig = require("../configs/auth");
 const AppError = require("../utils/AppError");
+
+const UsersRepository = require("../repositories/users/UsersRepository");
 
 class SessionsController {
   async create(req, res) {
     const { email, password } = req.body;
 
-    const user = await knex("users").where({ email }).first();
+    const usersRepository = new UsersRepository();
+
+    const user = await usersRepository.findByEmailOrId(email, true);
 
     if (!user) {
       throw new AppError("E-mail e/ou senha incorreta.", 401);

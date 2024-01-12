@@ -1,30 +1,30 @@
 const sqliteConnection = require("../../database/sqlite");
-const AppError = require("../../utils/AppError");
 
 class UsersRepository {
   async findByEmailOrId(identifier, byEmail = false) {
     const database = await sqliteConnection();
-    let user;
 
     if (byEmail) {
-      user = await database.get(
-        "SELECT id, name, email, role FROM users WHERE email = (?)",
-        [identifier]
+      const user = await database.get(
+        "SELECT id, name, email, password, role FROM users WHERE email = (?)",
+        identifier
       );
-    } else {
-      user = await database.get(
-        "SELECT id, name, email, password, role FROM users WHERE id = (?)",
-        [identifier]
-      );
-    }
 
-    return user;
+      return user;
+    } else {
+      const user = await database.get(
+        "SELECT id, name, email, password, role FROM users WHERE id = (?)",
+        identifier
+      );
+
+      return user;
+    }
   }
 
   async selectAll() {
     const database = await sqliteConnection();
     const user = await database.all(
-      `SELECT id, name, email, role, created_at, updated_at FROM users`
+      " SELECT id, name, email, role, created_at, updated_at FROM users"
     );
     return user;
   }
