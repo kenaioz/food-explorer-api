@@ -10,6 +10,7 @@ const categoriesController = new CategoriesController();
 
 categoriesRoutes.use(ensureAuthenticated);
 
+categoriesRoutes.post("/", categoriesController.create);
 categoriesRoutes.get("/", categoriesController.list);
 categoriesRoutes.get("/:id", categoriesController.index);
 

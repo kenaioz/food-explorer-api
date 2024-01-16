@@ -2,7 +2,7 @@ const sqliteConnection = require("../../database/sqlite");
 
 class IngredientsRepository {
   async insertData(ingredientsArray) {
-    const placeholders = ingredientsArray.map((ingredient) => "(?)").join(",");
+    const placeholders = ingredientsArray.map(() => "(?)").join(",");
     const sqlQuery = `INSERT INTO food_ingredients(name) VALUES ${placeholders}`;
 
     const database = await sqliteConnection();

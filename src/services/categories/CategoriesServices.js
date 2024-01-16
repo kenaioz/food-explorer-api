@@ -5,6 +5,12 @@ class CategoriesServices {
     this.categoriesRepository = categoriesRepository;
   }
 
+  async createData(ingredientsArray) {
+    await this.categoriesRepository.insertData(ingredientsArray);
+
+    return;
+  }
+
   async listAll() {
     const categories = await this.categoriesRepository.selectAll();
 

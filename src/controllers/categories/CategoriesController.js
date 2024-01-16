@@ -2,6 +2,17 @@ const CategoriesRepository = require("../../repositories/categories/CategoriesRe
 const CategoriesServices = require("../../services/categories/CategoriesServices");
 
 class CategoriesController {
+  async create(req, res) {
+    const categories = req.body;
+
+    const categoriesRepository = new CategoriesRepository();
+    const categoriesServices = new CategoriesServices(categoriesRepository);
+
+    categoriesServices.createData(categories);
+
+    return res.status(201).json();
+  }
+
   async list(req, res) {
     const categoriesRepository = new CategoriesRepository();
     const categoriesServices = new CategoriesServices(categoriesRepository);
