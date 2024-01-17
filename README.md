@@ -13,6 +13,8 @@ Como falei anteriormente à uma tabela a mais do que o necessário no banco para
 
 Na raiz do projeto eu deixei o arquivo de collection do Postman para ser importado ao seu Postman e conseguir entender melhor as rotas da API.
 
+Lembrando que na versão gratuita do Render se a API ficar um tempo ociosa ela desativa, então tenha pacienca ao executa-la pela primeira vez até ela ficar ativa novamente.
+
 
 ## Usuários existentes para testes
 
