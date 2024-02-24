@@ -27,10 +27,6 @@ Lembrando que na versão gratuita do Render se a API ficar um tempo ociosa ela d
 
 [**Front-end:**](https://github.com/kenaioz/food-explorer-ui) React, Styled-Components
 
-[**Deploy:**](https://main--cool-kitten-558d66.netlify.app/) Netlify
-
 
 [**Back-end:**](https://github.com/kenaioz/food-explorer-api) Node, Express, SQLite
-
-[**Deploy:**](https://food-explorer-api-ihgd.onrender.com) Render
 
